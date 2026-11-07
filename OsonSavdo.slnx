@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OsonSavdo.Api/OsonSavdo.Api.csproj" />
+    <Project Path="src/OsonSavdo.Application/OsonSavdo.Application.csproj" />
+    <Project Path="src/OsonSavdo.Domain/OsonSavdo.Domain.csproj" />
+    <Project Path="src/OsonSavdo.Infrastructure/OsonSavdo.Infrastructure.csproj" />
+  </Folder>
+</Solution>

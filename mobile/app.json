@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "OsonSavdo",
+    "slug": "osonsavdo-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
+    "splash": {
+      "backgroundColor": "#059669"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Mahsulotlar shtrix-kodlarini skaner qilish uchun kamera ruxsati talab etiladi."
+      }
+    },
+    "android": {
+      "package": "com.osonsavdo.pos",
+      "adaptiveIcon": {
+        "backgroundColor": "#059669"
+      },
+      "permissions": [
+        "CAMERA"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Mahsulotlar shtrix-kodlarini skaner qilish uchun kamera ruxsati talab etiladi."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "92e56195-eb0f-4f83-a86d-912a18140a04"
+      }
+    }
+  }
+}
