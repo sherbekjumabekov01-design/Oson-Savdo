@@ -17,6 +17,7 @@ export function LoginModal({ isOpen, onClose, currentUser, onLogin, onLogout }: 
   const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSwitching, setIsSwitching] = useState(false);
 
   if (!isOpen) return null;
 
@@ -26,6 +27,7 @@ export function LoginModal({ isOpen, onClose, currentUser, onLogin, onLogout }: 
     setLoading(true);
     try {
       await onLogin({ username, password });
+      setIsSwitching(false);
       onClose();
     } catch (err: any) {
       setError(err?.message || 'Login yoki parol xato');
@@ -49,18 +51,21 @@ export function LoginModal({ isOpen, onClose, currentUser, onLogin, onLogout }: 
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-800 dark:text-white">Tizimga Kirish (Auth)</h2>
-              <p className="text-xs text-slate-400">Do&apos;kon egasi (Admin) yoki Kassir</p>
+              <p className="text-xs text-slate-400">👑 SuperAdmin, Do&apos;kon egasi yoki Kassir</p>
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={() => {
+              setIsSwitching(false);
+              onClose();
+            }}
             className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {currentUser ? (
+        {currentUser && !isSwitching ? (
           <div className="py-6 space-y-4">
             <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 rounded-2xl flex items-center gap-3.5">
               <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
@@ -101,15 +106,26 @@ export function LoginModal({ isOpen, onClose, currentUser, onLogin, onLogout }: 
               )}
             </div>
 
-            <button
-              onClick={() => {
-                onLogout();
-                onClose();
-              }}
-              className="w-full py-3 bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-950/40 font-bold text-xs rounded-xl transition"
-            >
-              Chiqish (Logout)
-            </button>
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <button
+                onClick={() => {
+                  fillQuick('superadmin', 'super123');
+                  setIsSwitching(true);
+                }}
+                className="py-3 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5"
+              >
+                👑 SuperAdmin Kirish
+              </button>
+              <button
+                onClick={() => {
+                  onLogout();
+                  setIsSwitching(true);
+                }}
+                className="py-3 bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-950/40 font-bold text-xs rounded-xl transition"
+              >
+                Chiqish (Logout)
+              </button>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="py-4 space-y-4">
