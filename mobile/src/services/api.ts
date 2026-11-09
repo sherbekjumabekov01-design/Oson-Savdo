@@ -8,7 +8,7 @@ import {
   PaymentType
 } from '../types';
 
-let API_BASE_URL = 'http://192.168.0.62:5050/api';
+let API_BASE_URL = 'https://oson-savdo-z0mx.onrender.com/api';
 
 const STORAGE_KEYS = {
   API_URL: '@oson_savdo_api_url',

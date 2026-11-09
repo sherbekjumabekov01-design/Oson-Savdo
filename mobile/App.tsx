@@ -36,7 +36,7 @@ type Tab = 'pos' | 'debt' | 'inventory' | 'report';
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('pos');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [ipInput, setIpInput] = useState('http://192.168.13.37:5050/api');
+  const [ipInput, setIpInput] = useState('https://oson-savdo-z0mx.onrender.com/api');
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
   const [testingConnection, setTestingConnection] = useState(false);
 
