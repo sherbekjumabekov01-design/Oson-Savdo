@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: osonsavdo-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    envVars:
+      - key: DatabaseProvider
+        value: Supabase
+      - key: ConnectionStrings__SupabaseConnection
+        value: Host=aws-0-ap-southeast-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.wogacvylcgcgsrhbhiqr;Password=sherbek1418;SSL Mode=Require;Trust Server Certificate=true;
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
