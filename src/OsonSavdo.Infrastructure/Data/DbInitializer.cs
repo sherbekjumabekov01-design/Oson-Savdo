@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using OsonSavdo.Domain.Entities;
 using OsonSavdo.Domain.Enums;
 
@@ -8,7 +10,52 @@ public static class DbInitializer
 {
     public static async Task SeedAsync(AppDbContext context)
     {
-        await context.Database.EnsureCreatedAsync();
+        var databaseCreator = context.Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+        if (databaseCreator != null)
+        {
+            try
+            {
+                await databaseCreator.CreateTablesAsync();
+            }
+            catch
+            {
+                // Jadvallar allaqachon mavjud bo'lsa yoki qisman yaratilgan bo'lsa
+                try
+                {
+                    await context.Database.EnsureCreatedAsync();
+                }
+                catch
+                {
+                }
+
+                // Agar ba'zi jadvallar hali yaratilmagan bo'lsa (PostgreSQL / Supabase uchun har bir buyruqni alohida sinab ko'rish):
+                try
+                {
+                    var script = context.Database.GenerateCreateScript();
+                    var statements = script.Split(new[] { ";\r\n\r\n", ";\n\n", ";\r\n", ";\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var stmt in statements)
+                    {
+                        var trimmed = stmt.Trim();
+                        if (string.IsNullOrWhiteSpace(trimmed)) continue;
+                        try
+                        {
+                            await context.Database.ExecuteSqlRawAsync(trimmed + ";");
+                        }
+                        catch
+                        {
+                            // Mavjud jadval, indeks yoki constraint xatolarini o'tkazib yuborish
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+        else
+        {
+            await context.Database.EnsureCreatedAsync();
+        }
 
         // SQLite uchun SaaS jadvallarini va StoreId ustunlarini avtomatik tekshirish / qo'shish
         if (context.Database.IsSqlite())

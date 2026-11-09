@@ -20,6 +20,9 @@ public class SubscriptionCheckBackgroundService : BackgroundService
     {
         _logger.LogInformation("SaaS Do'konlar obunasini avtomatik monitoring qilish xizmati ishga tushdi.");
 
+        // Boshlang'ich kechikish (DbInitializer tugashini kutish)
+        await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
