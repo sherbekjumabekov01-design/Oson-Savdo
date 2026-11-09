@@ -60,7 +60,7 @@ import {
   SystemHealthDto
 } from '@/types/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://oson-savdo-z0mx.onrender.com/api';
 const TOKEN_KEY = 'oson_savdo_token';
 const USER_KEY = 'oson_savdo_user';
 const SELECTED_STORE_KEY = 'oson_savdo_selected_store';
