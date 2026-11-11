@@ -206,7 +206,7 @@ export default function Home() {
       setSuppliers(sups);
       setSupplyInvoices(invs);
       setPendingSalesCount(apiService.getPendingSales().length);
-      apiService.getPlatformAnnouncements().then(setActiveAnnouncements).catch(() => {});
+      apiService.getPlatformAnnouncements().then(setActiveAnnouncements).catch(() => { });
     } catch (err) {
       console.error('Error loading data:', err);
     } finally {
@@ -465,15 +465,14 @@ export default function Home() {
           .map(a => (
             <div
               key={a.id}
-              className={`px-6 py-2.5 flex items-center justify-between text-xs font-semibold shadow-md animate-in fade-in ${
-                a.type === 'warning'
+              className={`px-6 py-2.5 flex items-center justify-between text-xs font-semibold shadow-md animate-in fade-in ${a.type === 'warning'
                   ? 'bg-amber-600 text-white'
                   : a.type === 'alert'
-                  ? 'bg-rose-600 text-white'
-                  : a.type === 'success'
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-gradient-to-r from-indigo-700 to-violet-800 text-white'
-              }`}
+                    ? 'bg-rose-600 text-white'
+                    : a.type === 'success'
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-gradient-to-r from-indigo-700 to-violet-800 text-white'
+                }`}
             >
               <div className="flex items-center gap-2">
                 <Megaphone className="w-4 h-4 shrink-0 text-amber-300" />
@@ -611,8 +610,8 @@ export default function Home() {
           setSelectedReceiptSale(null);
         }}
         storeName={inspectingStore?.name || currentStoreInfo?.name || currentUser?.storeName || "OSON SAVDO"}
-        storePhone={inspectingStore?.phone || currentStoreInfo?.phone || "+998 71 200-00-00"}
-        storeAddress={inspectingStore?.address || currentStoreInfo?.address || "Toshkent sh., Savdo markazi"}
+        storePhone={inspectingStore?.phone || currentStoreInfo?.phone || "+998 91 802 8184"}
+        storeAddress={inspectingStore?.address || currentStoreInfo?.address || "Guliston shahar"}
       />
 
       <ShiftModal
@@ -693,8 +692,8 @@ export default function Home() {
           setSelectedDebtReceipt(null);
         }}
         storeName={inspectingStore?.name || currentStoreInfo?.name || currentUser?.storeName || "OSON SAVDO"}
-        storePhone={inspectingStore?.phone || currentStoreInfo?.phone || "+998 71 200-00-00"}
-        storeAddress={inspectingStore?.address || currentStoreInfo?.address || "Toshkent sh., Savdo markazi"}
+        storePhone={inspectingStore?.phone || currentStoreInfo?.phone || "+998 91 802 8184"}
+        storeAddress={inspectingStore?.address || currentStoreInfo?.address || "Guliston shahar"}
       />
 
       <AddExpenseModal
@@ -732,11 +731,10 @@ export default function Home() {
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 md:hidden flex items-center justify-around h-16 px-1 shadow-lg">
         <button
           onClick={() => setActiveTab('pos')}
-          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition ${
-            activeTab === 'pos'
+          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition ${activeTab === 'pos'
               ? 'text-emerald-600 dark:text-emerald-400'
               : 'text-slate-500 dark:text-slate-400'
-          }`}
+            }`}
         >
           <ScanLine className="w-5 h-5 mb-0.5" />
           <span>Kassa</span>
@@ -745,11 +743,10 @@ export default function Home() {
         {!isCashierRole && (
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition ${
-              activeTab === 'dashboard'
+            className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition ${activeTab === 'dashboard'
                 ? 'text-emerald-600 dark:text-emerald-400'
                 : 'text-slate-500 dark:text-slate-400'
-            }`}
+              }`}
           >
             <LayoutDashboard className="w-5 h-5 mb-0.5" />
             <span>Panel</span>
@@ -758,11 +755,10 @@ export default function Home() {
 
         <button
           onClick={() => setActiveTab('inventory')}
-          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition relative ${
-            activeTab === 'inventory'
+          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition relative ${activeTab === 'inventory'
               ? 'text-emerald-600 dark:text-emerald-400'
               : 'text-slate-500 dark:text-slate-400'
-          }`}
+            }`}
         >
           <Package className="w-5 h-5 mb-0.5" />
           <span>Ombor</span>
@@ -773,11 +769,10 @@ export default function Home() {
 
         <button
           onClick={() => setActiveTab('debts')}
-          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition relative ${
-            activeTab === 'debts'
+          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition relative ${activeTab === 'debts'
               ? 'text-emerald-600 dark:text-emerald-400'
               : 'text-slate-500 dark:text-slate-400'
-          }`}
+            }`}
         >
           <BookOpen className="w-5 h-5 mb-0.5" />
           <span>Qarzlar</span>

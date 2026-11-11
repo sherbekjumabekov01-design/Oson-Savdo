@@ -12,3 +12,4 @@ services:
         value: Host=aws-0-ap-southeast-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.wogacvylcgcgsrhbhiqr;Password=sherbek1418;SSL Mode=Require;Trust Server Certificate=true;
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
+

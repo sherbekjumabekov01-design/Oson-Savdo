@@ -223,8 +223,8 @@ public static class DbInitializer
             {
                 Name = "Bosh Do'kon (Namuna)",
                 OwnerFullName = "Do'kon Egasi",
-                Phone = "+998 90 123-45-67",
-                Address = "Toshkent sh.",
+                Phone = "+998 91 802 8184",
+                Address = "Guliston shahar",
                 MonthlyFee = 150000m,
                 Plan = "Standart",
                 IsActive = true,
@@ -233,6 +233,24 @@ public static class DbInitializer
             };
             await context.Stores.AddAsync(defaultStore);
             await context.SaveChangesAsync();
+        }
+        else
+        {
+            bool storeChanged = false;
+            if (defaultStore.Phone == "+998 90 123-45-67" || defaultStore.Phone == "+998 71 200-00-00" || string.IsNullOrWhiteSpace(defaultStore.Phone))
+            {
+                defaultStore.Phone = "+998 91 802 8184";
+                storeChanged = true;
+            }
+            if (defaultStore.Address == "Toshkent sh." || defaultStore.Address == "Toshkent sh., Savdo markazi" || string.IsNullOrWhiteSpace(defaultStore.Address))
+            {
+                defaultStore.Address = "Guliston shahar";
+                storeChanged = true;
+            }
+            if (storeChanged)
+            {
+                await context.SaveChangesAsync();
+            }
         }
 
         // SuperAdmin (Platforma Egasi) foydalanuvchisini tekshirish va yaratish

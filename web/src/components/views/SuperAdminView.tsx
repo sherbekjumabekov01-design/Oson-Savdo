@@ -947,9 +947,13 @@ export function SuperAdminView({ onSelectStoreToInspect }: SuperAdminViewProps) 
                               {store.phone}
                             </a>
                             <a
-                              href={`https://t.me/${store.phone.replace(/[^0-9]/g, '')}`}
+                              href={
+                                store.phone.replace(/[^0-9]/g, '') === '998918028184'
+                                  ? 'https://t.me/Jumabekov_014'
+                                  : `https://t.me/${store.phone.replace(/[^0-9]/g, '')}`
+                              }
                               target="_blank"
-                              rel="noreferrer"
+                              rel="noopener noreferrer"
                               className="text-sky-500 hover:opacity-80"
                               title="Telegramda ochish"
                             >
@@ -1936,7 +1940,7 @@ export function SuperAdminView({ onSelectStoreToInspect }: SuperAdminViewProps) 
                   <input
                     type="text"
                     required
-                    placeholder="+998 90 123-45-67"
+                    placeholder="+998 91 802 8184"
                     value={newStore.phone}
                     onChange={e => setNewStore({ ...newStore, phone: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-emerald-500"
@@ -1949,7 +1953,7 @@ export function SuperAdminView({ onSelectStoreToInspect }: SuperAdminViewProps) 
                   </label>
                   <input
                     type="text"
-                    placeholder="Toshkent sh., Yunusobod"
+                    placeholder="Guliston shahar"
                     value={newStore.address || ''}
                     onChange={e => setNewStore({ ...newStore, address: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-emerald-500"

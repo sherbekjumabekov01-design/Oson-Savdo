@@ -18,8 +18,8 @@ export function ReceiptModal({
   onClose,
   sale,
   storeName = "OSON SAVDO",
-  storePhone = "+998 71 200-00-00",
-  storeAddress = "Toshkent sh., Savdo markazi"
+  storePhone = "+998 91 802 8184",
+  storeAddress = "Guliston shahar"
 }: Props) {
   const [paperWidth, setPaperWidth] = useState<'58mm' | '80mm'>('58mm');
   const [copied, setCopied] = useState(false);
@@ -184,7 +184,18 @@ export function ReceiptModal({
             <div className="text-center pb-3 border-b border-dashed border-black">
               <h1 className="text-sm font-black tracking-wider uppercase">{storeName}</h1>
               <p className="text-[10px] text-gray-700">{storeAddress}</p>
-              <p className="text-[10px] text-gray-700">Tel: {storePhone}</p>
+              <p className="text-[10px] text-gray-700">
+                Tel:{" "}
+                <a
+                  href="https://t.me/Jumabekov_014"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline font-bold text-sky-700"
+                  title="Telegram orqali bog'lanish"
+                >
+                  {storePhone}
+                </a>
+              </p>
             </div>
 
             {/* Metadata */}

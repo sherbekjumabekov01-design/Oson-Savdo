@@ -18,7 +18,9 @@ import {
   ArrowLeft,
   BarChart3,
   ClipboardCheck,
-  X
+  X,
+  Send,
+  MapPin
 } from 'lucide-react';
 import { apiService } from '@/services/api';
 
@@ -259,6 +261,24 @@ export function Sidebar({
 
       {/* Footer Info & Database Backup */}
       <div className="p-4 border-t border-slate-100 dark:border-slate-800 space-y-2">
+        {/* Aloqa / Telegram bog'lanish */}
+        <a
+          href="https://t.me/Jumabekov_014"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full py-2 px-3 bg-sky-50 dark:bg-sky-950/30 hover:bg-sky-100 dark:hover:bg-sky-900/50 border border-sky-200 dark:border-sky-800 rounded-xl text-sky-600 dark:text-sky-400 text-[11px] font-semibold flex items-center justify-between transition group"
+          title="Telegram orqali bog'lanish: @Jumabekov_014"
+        >
+          <div className="flex items-center gap-2">
+            <Send className="w-3.5 h-3.5 text-sky-500 group-hover:scale-110 transition-transform" />
+            <span className="font-mono font-bold">+998 91 802 8184</span>
+          </div>
+          <span className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-slate-400" />
+            Guliston shahar
+          </span>
+        </a>
+
         <a
           href={apiService.getBackupDownloadUrl()}
           download

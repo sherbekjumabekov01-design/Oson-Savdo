@@ -34,8 +34,8 @@ export function ReceiptModal({
   sale,
   onClose,
   storeName = 'OSON SAVDO',
-  storePhone = '+998 71 200-00-00',
-  storeAddress = 'Toshkent sh., Savdo markazi'
+  storePhone = '+998 91 802 8184',
+  storeAddress = 'Guliston shahar'
 }: Props) {
   const [paperWidth, setPaperWidth] = useState<'58mm' | '80mm'>('58mm');
   const [copied, setCopied] = useState(false);

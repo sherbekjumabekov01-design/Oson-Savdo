@@ -14,7 +14,8 @@ import {
   Layers,
   Sparkles,
   Settings,
-  Menu
+  Menu,
+  Send
 } from 'lucide-react';
 import { CurrentShiftSummaryDto, LoginResponseDto } from '@/types/api';
 
@@ -91,6 +92,18 @@ export function Navbar({
       </div>
 
       <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+        {/* Telegram & Telefon Aloqa Havolasi */}
+        <a
+          href="https://t.me/Jumabekov_014"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800 rounded-xl text-[11px] sm:text-xs font-bold transition shrink-0 group"
+          title="Telegram orqali bog'lanish: @Jumabekov_014"
+        >
+          <Send className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-sky-500 group-hover:scale-110 transition-transform" />
+          <span className="font-mono">+998 91 802 8184</span>
+        </a>
+
         {/* Offline / Online Indicator */}
         <div
           title={isOnline ? 'Server bilan aloqa faol' : 'Server aloqasi uzilgan (Lokal rejim)'}
