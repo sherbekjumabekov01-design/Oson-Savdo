@@ -17,7 +17,8 @@ import {
   Building2,
   ArrowLeft,
   BarChart3,
-  ClipboardCheck
+  ClipboardCheck,
+  X
 } from 'lucide-react';
 import { apiService } from '@/services/api';
 
@@ -42,6 +43,8 @@ interface SidebarProps {
   isSuperAdmin?: boolean;
   inspectingStoreName?: string | null;
   onExitStoreInspection?: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 export function Sidebar({
@@ -52,7 +55,9 @@ export function Sidebar({
   isCashierRole = false,
   isSuperAdmin = false,
   inspectingStoreName = null,
-  onExitStoreInspection
+  onExitStoreInspection,
+  isOpen = false,
+  onClose
 }: SidebarProps) {
   const menuItems = [
     {
@@ -153,23 +158,34 @@ export function Sidebar({
     return true;
   });
 
-  return (
-    <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between h-screen sticky top-0 shrink-0">
+  const sidebarContent = (
+    <div className="flex flex-col justify-between h-full">
       <div>
         {/* Brand */}
-        <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
-            <Store className="w-5 h-5" />
+        <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 shrink-0">
+              <Store className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="font-bold text-sm sm:text-base text-slate-800 dark:text-white flex items-center gap-1.5">
+                Oson Savdo
+                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">
+                  POS
+                </span>
+              </h1>
+              <p className="text-[11px] text-slate-400">Do&apos;kon boshqaruv tizimi</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-bold text-base text-slate-800 dark:text-white flex items-center gap-1.5">
-              Oson Savdo
-              <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">
-                POS
-              </span>
-            </h1>
-            <p className="text-[11px] text-slate-400">Do&apos;kon boshqaruv tizimi</p>
-          </div>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1.5 -mr-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl md:hidden hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              title="Yopish"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Do'konni ko'rish (Inspection) Rejimi Banneri */}
@@ -186,7 +202,10 @@ export function Sidebar({
             </p>
             {onExitStoreInspection && (
               <button
-                onClick={onExitStoreInspection}
+                onClick={() => {
+                  onExitStoreInspection();
+                  if (onClose) onClose();
+                }}
                 className="w-full py-1.5 px-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 shadow transition"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -197,7 +216,7 @@ export function Sidebar({
         )}
 
         {/* Navigation list */}
-        <div className="p-3 space-y-1">
+        <div className="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-230px)]">
           <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
             {isSuperAdmin && !inspectingStoreName ? "SaaS Bo'limlari" : "Asosiy Bo'limlar"}
           </p>
@@ -208,7 +227,10 @@ export function Sidebar({
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  if (onClose) onClose();
+                }}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${
                   isActive
                     ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 font-bold'
@@ -260,6 +282,28 @@ export function Sidebar({
           </div>
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (hidden on mobile, visible on md and up) */}
+      <aside className="hidden md:flex w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col justify-between h-screen sticky top-0 shrink-0">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer (opens on mobile when isOpen is true) */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          <div
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity animate-in fade-in"
+            onClick={onClose}
+          />
+          <aside className="relative w-72 max-w-[85vw] bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-left duration-200">
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }

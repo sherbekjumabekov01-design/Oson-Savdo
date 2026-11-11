@@ -27,7 +27,7 @@ import { AddExpenseModal } from '@/components/modals/AddExpenseModal';
 import { SaleDetailModal } from '@/components/modals/SaleDetailModal';
 import { SubscriptionExpiredModal } from '@/components/modals/SubscriptionExpiredModal';
 import { StoreSettingsModal } from '@/components/modals/StoreSettingsModal';
-import { AlertTriangle, Megaphone, X } from 'lucide-react';
+import { AlertTriangle, Megaphone, X, Menu, ScanLine, LayoutDashboard, Package, BookOpen } from 'lucide-react';
 
 import { apiService } from '@/services/api';
 import {
@@ -60,6 +60,7 @@ import {
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabType>('pos');
   const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeAnnouncements, setActiveAnnouncements] = useState<PlatformAnnouncementDto[]>([]);
   const [dismissedAnnouncements, setDismissedAnnouncements] = useState<number[]>([]);
 
@@ -419,6 +420,8 @@ export default function Home() {
         isSuperAdmin={currentUser?.role === 'SuperAdmin'}
         inspectingStoreName={inspectingStore?.name ?? null}
         onExitStoreInspection={handleExitStoreInspection}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
@@ -440,6 +443,7 @@ export default function Home() {
               ? () => setIsStoreSettingsOpen(true)
               : undefined
           }
+          onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
         />
 
         {/* SIM-karta kabi obuna tugashidan 3 kun oldin ogohlantirish banneri */}
@@ -487,7 +491,7 @@ export default function Home() {
             </div>
           ))}
 
-        <main className="flex-1 p-6 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-2 sm:p-4 md:p-6 pb-20 md:pb-6 max-w-7xl w-full mx-auto min-w-0">
           {activeTab === 'saas' && (
             <SuperAdminView onSelectStoreToInspect={handleSelectStoreToInspect} />
           )}
@@ -723,6 +727,75 @@ export default function Home() {
         onClose={() => setIsStoreSettingsOpen(false)}
         onSaved={loadData}
       />
+
+      {/* Mobil pastki tezkor navigatsiya paneli (Bottom Navigation Bar) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 md:hidden flex items-center justify-around h-16 px-1 shadow-lg">
+        <button
+          onClick={() => setActiveTab('pos')}
+          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition ${
+            activeTab === 'pos'
+              ? 'text-emerald-600 dark:text-emerald-400'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <ScanLine className="w-5 h-5 mb-0.5" />
+          <span>Kassa</span>
+        </button>
+
+        {!isCashierRole && (
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition ${
+              activeTab === 'dashboard'
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-slate-500 dark:text-slate-400'
+            }`}
+          >
+            <LayoutDashboard className="w-5 h-5 mb-0.5" />
+            <span>Panel</span>
+          </button>
+        )}
+
+        <button
+          onClick={() => setActiveTab('inventory')}
+          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition relative ${
+            activeTab === 'inventory'
+              ? 'text-emerald-600 dark:text-emerald-400'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <Package className="w-5 h-5 mb-0.5" />
+          <span>Ombor</span>
+          {lowStockCount > 0 && (
+            <span className="absolute top-1 right-3 w-2 h-2 rounded-full bg-rose-500" />
+          )}
+        </button>
+
+        <button
+          onClick={() => setActiveTab('debts')}
+          className={`flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold transition relative ${
+            activeTab === 'debts'
+              ? 'text-emerald-600 dark:text-emerald-400'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <BookOpen className="w-5 h-5 mb-0.5" />
+          <span>Qarzlar</span>
+          {debtors.length > 0 && (
+            <span className="absolute top-1 right-2.5 px-1 py-0.2 bg-amber-500 text-white rounded-full text-[8px] font-mono">
+              {debtors.length}
+            </span>
+          )}
+        </button>
+
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="flex flex-col items-center justify-center flex-1 py-1 text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800"
+        >
+          <Menu className="w-5 h-5 mb-0.5" />
+          <span>Menyu</span>
+        </button>
+      </nav>
     </div>
   );
 }

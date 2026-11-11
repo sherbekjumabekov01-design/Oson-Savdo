@@ -77,6 +77,7 @@ export function PosView({
   const [cart, setCart] = useState<CartItem[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [mobilePosTab, setMobilePosTab] = useState<'catalog' | 'cart'>('catalog');
 
   // To'lov parametrlari
   const [paymentType, setPaymentType] = useState<PaymentType>('Cash');
@@ -478,11 +479,47 @@ export function PosView({
   clearCartRef.current = clearCart;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-5 h-[calc(100vh-100px)]">
+    <div className="flex flex-col gap-3 sm:gap-5 min-h-[calc(100vh-130px)] lg:h-[calc(100vh-100px)] lg:flex-row relative">
+      {/* Mobil ekranlar uchun Katalog / Savat tablari */}
+      <div className="flex lg:hidden bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl shrink-0 gap-1">
+        <button
+          type="button"
+          onClick={() => setMobilePosTab('catalog')}
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 ${
+            mobilePosTab === 'catalog'
+              ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm'
+              : 'text-slate-500 hover:text-slate-800 dark:text-slate-400'
+          }`}
+        >
+          <Search className="w-3.5 h-3.5" />
+          <span>Katalog ({filteredProducts.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMobilePosTab('cart')}
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 ${
+            mobilePosTab === 'cart'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'text-slate-500 hover:text-slate-800 dark:text-slate-400'
+          }`}
+        >
+          <ShoppingCart className="w-3.5 h-3.5" />
+          <span>Savat ({cart.length})</span>
+          {cart.length > 0 && (
+            <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 text-white font-mono">
+              {totalAmount.toLocaleString()}
+            </span>
+          )}
+        </button>
+      </div>
+
       {/* CHAP TOMON: MAHSULOTLAR KATALOGI VA TEZKOR SKANER */}
-      <div className="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+      <div className={`flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs ${
+        mobilePosTab === 'cart' ? 'hidden lg:flex' : 'flex'
+      }`}>
         {/* Hotkeys Toolbar */}
-        <div className="px-4 py-2 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border-b border-slate-200/60 dark:border-slate-800 flex items-center justify-between gap-2 overflow-x-auto text-[11px]">
+        <div className="hidden md:flex px-4 py-2 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 border-b border-slate-200/60 dark:border-slate-800 items-center justify-between gap-2 overflow-x-auto text-[11px]">
           <div className="flex items-center gap-1.5 font-bold text-slate-700 dark:text-slate-300 shrink-0">
             <Keyboard className="w-4 h-4 text-emerald-600" />
             <span className="hidden sm:inline">Tezkor Tugmalar:</span>
@@ -624,17 +661,49 @@ export function PosView({
         </div>
       </div>
 
+      {/* Mobil suzuvchi Savatga o'tish tugmasi */}
+      {mobilePosTab === 'catalog' && cart.length > 0 && (
+        <div className="fixed bottom-20 left-4 right-4 z-30 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMobilePosTab('cart')}
+            className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-2xl shadow-xl shadow-emerald-600/40 flex items-center justify-between transition animate-in slide-in-from-bottom duration-200"
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
+                {cart.length}
+              </div>
+              <span>Savatga o&apos;tish</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-mono text-sm">{totalAmount.toLocaleString()} so&apos;m</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </button>
+        </div>
+      )}
+
       {/* O'NG TOMON: SAVAT VA TO'LOV PANELI (POS CHECKOUT) */}
-      <div className="w-full lg:w-[420px] xl:w-[460px] flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+      <div className={`w-full lg:w-[420px] xl:w-[460px] flex flex-col bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs shrink-0 ${
+        mobilePosTab === 'catalog' ? 'hidden lg:flex' : 'flex'
+      }`}>
         {/* Savat sarlavhasi */}
-        <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+        <div className="p-3 sm:p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
           <div className="flex items-center gap-2">
-            <div className="p-2 bg-emerald-500/10 text-emerald-600 rounded-xl">
+            <button
+              type="button"
+              onClick={() => setMobilePosTab('catalog')}
+              className="lg:hidden p-1.5 -ml-1 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-xs flex items-center gap-1 font-semibold"
+            >
+              <ArrowRight className="w-3.5 h-3.5 rotate-180" />
+              <span>Katalog</span>
+            </button>
+            <div className="p-2 bg-emerald-500/10 text-emerald-600 rounded-xl hidden sm:block">
               <ShoppingCart className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-slate-800 dark:text-white">Kassir Savati</h2>
-              <p className="text-[11px] text-slate-400">
+              <h2 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">Kassir Savati</h2>
+              <p className="text-[10px] sm:text-[11px] text-slate-400">
                 {totalItemsCount} ta tovar • {cart.length} xil
               </p>
             </div>
